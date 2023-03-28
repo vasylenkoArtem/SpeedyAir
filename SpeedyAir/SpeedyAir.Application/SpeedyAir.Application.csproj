@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Folder Include="AggregateRoots\Flight\Commands" />
+      <Folder Include="AggregateRoots\Flight\Models" />
+      <Folder Include="AggregateRoots\Flight\Queries" />
+      <Folder Include="AggregateRoots\Order\Commands" />
+      <Folder Include="AggregateRoots\Order\Models" />
+      <Folder Include="AggregateRoots\Order\Queries" />
+    </ItemGroup>
+
+</Project>
