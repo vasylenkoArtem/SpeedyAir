@@ -2,6 +2,28 @@
 
 public class Flight
 {
+    public Flight()
+    { }
+    
+    public Flight(int flightNumber, 
+        string originCity, string originAirportCode, 
+        string destinationCity,
+        string destinationAirportCode, 
+        int departureDayIndex, 
+        //SpeedyAir.ly by default
+        string airlineDesignator = "SA",
+        int maxAmountOfBoxes = 20)
+    {
+        OriginCity = originCity;
+        OriginAirportCode = originAirportCode;
+        DestinationCity = destinationCity;
+        DestinationAirportCode = destinationAirportCode;
+        AirlineDesignator = airlineDesignator;
+        MaxAmountOfBoxes = maxAmountOfBoxes;
+        DepartureDay = departureDayIndex;
+        FlightNumber = flightNumber;
+    }
+    
     public int Id { get; set; }
 
     public int FlightNumber { get; set; }
@@ -19,4 +41,7 @@ public class Flight
     public int DepartureDay { get; set; }
     
     public int MaxAmountOfBoxes { get; set; }
+
+    
+    public List<Order> Orders { get; set; }
 }

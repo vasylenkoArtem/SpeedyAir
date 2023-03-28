@@ -1,11 +1,32 @@
 ﻿using MediatR;
+using SpeedyAir.Domain;
 
 namespace SpeedyAir.Application.AggregateRoots.Order.Commands;
 
 public class AddOrdersCommandHandler : IRequestHandler<AddOrdersCommand, List<int>>
 {
+    private readonly IOrdersRepository _ordersRepository;
+
+    public AddOrdersCommandHandler(IOrdersRepository ordersRepository)
+    {
+        _ordersRepository = ordersRepository;
+    }
+
     public async Task<List<int>> Handle(AddOrdersCommand request, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        if (request.Orders.Count <= 0)
+        {
+            throw new Exception("Orders is empty");
+        }   
+        
+        var domainOrders = request.Orders.Select(requestOrder => new Domain.Order(
+            requestOrder.OrderIdentificator,
+            requestOrder.OriginAirportCode,
+            requestOrder.DestinationAirportCode
+        )).ToList();
+
+        await _ordersRepository.AddOrders(domainOrders);
+
+        return domainOrders.Select(x => x.Id).ToList();
     }
 }
