@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NLog;
+using SpeedyAir.Application;
 using SpeedyAir.ConsoleApp.Services;
 
 namespace SpeedyAir.ConsoleApp;
@@ -13,7 +14,13 @@ internal class Program
     private static async Task RunTakeHomeScenario(IServiceScope serviceScope)
     {
         var flightScheduleService = serviceScope.ServiceProvider.GetRequiredService<IFlightScheduleService>();
+        var ordersService = serviceScope.ServiceProvider.GetRequiredService<IOrdersService>();
         
+        await flightScheduleService.LoadFlightSchedule();
+        
+        await ordersService.LoadOrders();
+        
+        //TODO: process not scheduled orders Integration Event, trigger when new flight added
     }
 
     internal static async Task Main(string[] args)
@@ -46,6 +53,7 @@ internal class Program
         services.AddTransient<IConfiguration>(x => configuration);
 
         services.AddConsoleAppServices();
+        services.AddApplication();
         
         return services.BuildServiceProvider(true);
     }

@@ -2,5 +2,5 @@
 
 public interface IFlightScheduleService
 {
-    
+    Task LoadFlightSchedule();
 }

@@ -19,4 +19,8 @@
       <Folder Include="Models" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\SpeedyAir.Application\SpeedyAir.Application.csproj" />
+    </ItemGroup>
+
 </Project>
