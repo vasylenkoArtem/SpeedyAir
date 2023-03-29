@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using SpeedyAir.Application.AggregateRoots.Flight.Commands;
 using SpeedyAir.Application.AggregateRoots.Flight.Models;
+using SpeedyAir.ConsoleApp.Services.Extensions;
 
 namespace SpeedyAir.ConsoleApp.Services;
 
@@ -69,7 +70,7 @@ public class FlightScheduleConsoleConsoleService : IFlightScheduleConsoleService
 
             if (parameters.Length != 6)
             {
-                ThrowInputValidationErrorWithAction();
+                ConsoleServiceExtensions.ThrowInputValidationError();
             }
 
             var dayNumber = parameters[0];
@@ -84,32 +85,32 @@ public class FlightScheduleConsoleConsoleService : IFlightScheduleConsoleService
 
             if (!int.TryParse(dayNumber, out dayNumberConverted))
             {
-                ThrowInputValidationErrorWithAction("Day number");
+                ConsoleServiceExtensions.ThrowInputValidationError("Day number");
             }
 
             if (!int.TryParse(flightNumber, out flightNumberConverted))
             {
-                ThrowInputValidationErrorWithAction("Flight number");
+                ConsoleServiceExtensions.ThrowInputValidationError("Flight number");
             }
 
             if (string.IsNullOrEmpty(originCity))
             {
-                ThrowInputValidationErrorWithAction("Origin city");
+                ConsoleServiceExtensions.ThrowInputValidationError("Origin city");
             }
 
             if (string.IsNullOrEmpty(originAirportCode))
             {
-                ThrowInputValidationErrorWithAction("Origin Airport Code");
+                ConsoleServiceExtensions.ThrowInputValidationError("Origin Airport Code");
             }
 
             if (string.IsNullOrEmpty(destinationCity))
             {
-                ThrowInputValidationErrorWithAction("Destination City");
+                ConsoleServiceExtensions.ThrowInputValidationError("Destination City");
             }
 
             if (string.IsNullOrEmpty(destinationAirportCode))
             {
-                ThrowInputValidationErrorWithAction("Destination Airport Code");
+                ConsoleServiceExtensions.ThrowInputValidationError("Destination Airport Code");
             }
 
             var createFlightViewModel = new CreateFlightViewModel()
@@ -142,19 +143,5 @@ public class FlightScheduleConsoleConsoleService : IFlightScheduleConsoleService
         }
 
         return scheduleDays;
-    }
-
-    private static void ThrowInputValidationErrorWithAction(string fieldName = null)
-    {
-        var fieldNameText = !string.IsNullOrEmpty(fieldName) ? $" in the {fieldName} field" : string.Empty;
-
-        Console.WriteLine($"Wrong input{fieldNameText}, Do you want to try again? (Y/N)");
-
-        var input = Console.ReadLine();
-        if (input == "Y" || input == "y")
-        {
-            //restart
-        }
-        //break;
     }
 }
