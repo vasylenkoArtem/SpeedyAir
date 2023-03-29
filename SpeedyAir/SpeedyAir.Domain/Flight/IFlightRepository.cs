@@ -6,5 +6,5 @@ public interface IFlightRepository : IRepositoryBase
 {
     Task AddFlights(List<Domain.Flight> flights);
     
-    Task<List<Flight>> GetAvailableFlights();
+    Task<List<Flight>> GetAvailableFlights(List<int>? flightIds = null);
 }

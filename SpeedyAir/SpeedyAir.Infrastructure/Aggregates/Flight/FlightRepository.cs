@@ -25,10 +25,12 @@ public class FlightRepository : RepositoryBase, IFlightRepository
         await _dbContext.Flights.AddRangeAsync(flights);
     }
 
-    public async Task<List<Domain.Flight>> GetAvailableFlights()
+    public async Task<List<Domain.Flight>> GetAvailableFlights(List<int>? flightIds = null)
     {
         var flights = await _dbContext.Flights
-            .Where(x => x.Orders.Count < x.MaxAmountOfBoxes)
+            .Where(x => x.Orders.Count < x.MaxAmountOfBoxes
+                        &&
+                        (flightIds == null || flightIds.Contains(x.Id)))
             .ToListAsync();
 
         return flights;

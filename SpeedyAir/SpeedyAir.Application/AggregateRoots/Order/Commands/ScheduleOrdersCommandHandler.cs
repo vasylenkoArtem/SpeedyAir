@@ -19,7 +19,7 @@ public class ScheduleOrdersCommandHandler : IRequestHandler<ScheduleOrdersComman
 
     public async Task<List<OrderViewModel>> Handle(ScheduleOrdersCommand request, CancellationToken cancellationToken)
     {
-        var flights = await _flightRepository.GetAvailableFlights();
+        var flights = await _flightRepository.GetAvailableFlights(request.FlightIds);
 
         var orderedFlights = flights.OrderBy(x => x.OriginAirportCode)
             .ThenBy(x => x.DestinationAirportCode)

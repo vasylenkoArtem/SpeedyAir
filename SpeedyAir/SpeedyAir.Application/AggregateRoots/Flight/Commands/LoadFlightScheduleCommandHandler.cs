@@ -45,9 +45,9 @@ public class LoadFlightScheduleCommandHandler : IRequestHandler<LoadFlightSchedu
 
         if (request.SchedulePendingOrders)
         {
-            await SchedulePendingOrders();
+            await SchedulePendingOrders(domainFlights.Select(x => x.Id).ToList());
         }
-        
+
         return domainFlights.Select(domainFlight => new GetFlightViewModel()
         {
             DestinationAirportCode = domainFlight.DestinationAirportCode,
@@ -60,13 +60,14 @@ public class LoadFlightScheduleCommandHandler : IRequestHandler<LoadFlightSchedu
     }
 
     //TODO: Move to separate service and make a background task, make integration event
-    private async Task SchedulePendingOrders()
+    private async Task SchedulePendingOrders(List<int> flightIds)
     {
         var pendingOrders = await _ordersRepository.GetPendingOrders();
 
         await _mediator.Send(new ScheduleOrdersCommand()
         {
-            OrderIds = pendingOrders.Select(x => x.Id).ToList()
+            OrderIds = pendingOrders.Select(x => x.Id).ToList(),
+            FlightIds = flightIds
         });
     }
 }
