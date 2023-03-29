@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SpeedyAir.Application.AggregateRoots.Order.Commands;
 using SpeedyAir.Application.AggregateRoots.Order.Models;
+using SpeedyAir.ConsoleApp.Exceptions;
 
 namespace SpeedyAir.ConsoleApp.Services;
 
@@ -28,28 +29,35 @@ public class OrdersLoadingConsoleService : IOrdersLoadingConsoleService
         }
 
         var inputOrders = new List<AddOrderViewModel>();
-        
-        using (StreamReader r = new StreamReader(ordersJsonFilePath))
+
+        try
         {
-            string json = await r.ReadToEndAsync();
-
-            var deserializedJson = JsonConvert.DeserializeObject<JObject>(json);
-            
-            foreach (var property in deserializedJson.Properties())
+            using (StreamReader r = new StreamReader(ordersJsonFilePath))
             {
-                var orderIdentificator = property.Name;
-                var destinationAirportCode = property.Value.First().Values().First().Value<string>();
-                
-                inputOrders.Add(new AddOrderViewModel()
-                {
-                    OrderIdentificator = orderIdentificator,
-                    DestinationAirportCode = destinationAirportCode,
-                    OriginAirportCode = "YUL"
-                });
-            }
+                string json = await r.ReadToEndAsync();
 
+                var deserializedJson = JsonConvert.DeserializeObject<JObject>(json);
+            
+                foreach (var property in deserializedJson.Properties())
+                {
+                    var orderIdentificator = property.Name;
+                    var destinationAirportCode = property.Value.First().Values().First().Value<string>();
+                
+                    inputOrders.Add(new AddOrderViewModel()
+                    {
+                        OrderIdentificator = orderIdentificator,
+                        DestinationAirportCode = destinationAirportCode,
+                        OriginAirportCode = "YUL"
+                    });
+                }
+
+            }
         }
-        
+        catch (Exception ex)
+        {
+            throw new ConsoleAppLogicException($"Error happened during parsing json: message: {ex.Message}");
+        }
+
         var orderIds = await _mediator.Send(new AddOrdersCommand()
         {
             Orders = inputOrders

@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using SpeedyAir.Application.Exceptions;
 using SpeedyAir.Domain;
 
 namespace SpeedyAir.Application.AggregateRoots.Order.Commands;
@@ -16,7 +17,7 @@ public class AddOrdersCommandHandler : IRequestHandler<AddOrdersCommand, List<in
     {
         if (request.Orders.Count <= 0)
         {
-            throw new Exception("Orders is empty");
+            throw new ApplicationLogicException("Orders is empty");
         }   
         
         var domainOrders = request.Orders.Select(requestOrder => new Domain.Order(

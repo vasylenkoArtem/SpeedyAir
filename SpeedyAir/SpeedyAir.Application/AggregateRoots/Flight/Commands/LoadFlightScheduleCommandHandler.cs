@@ -1,8 +1,8 @@
 ﻿using MediatR;
 using SpeedyAir.Application.AggregateRoots.Flight.Models;
 using SpeedyAir.Application.AggregateRoots.Order.Commands;
+using SpeedyAir.Application.Exceptions;
 using SpeedyAir.Domain;
-using ApplicationException = SpeedyAir.Application.Exceptions.ApplicationException;
 
 namespace SpeedyAir.Application.AggregateRoots.Flight.Commands;
 
@@ -26,7 +26,7 @@ public class LoadFlightScheduleCommandHandler : IRequestHandler<LoadFlightSchedu
     {
         if (request.ScheduleDays.Count <= 0)
         {
-            throw new ApplicationException("Schedule is empty");
+            throw new ApplicationLogicException("Schedule is empty");
         }        
         
         var domainFlights = request.ScheduleDays.SelectMany(scheduleDay =>

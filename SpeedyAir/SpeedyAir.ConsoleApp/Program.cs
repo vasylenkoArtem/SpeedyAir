@@ -3,7 +3,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NLog;
 using SpeedyAir.Application;
+using SpeedyAir.Application.Exceptions;
+using SpeedyAir.ConsoleApp.Exceptions;
 using SpeedyAir.ConsoleApp.Services;
+using SpeedyAir.Domain.Exceptions;
 using SpeedyAir.Infrastructure;
 
 namespace SpeedyAir.ConsoleApp;
@@ -38,9 +41,22 @@ internal class Program
 
             await RunTakeHomeScenario(scope);
         }
+        catch (DomainException ex)
+        {
+            Console.WriteLine($"{nameof(DomainException)} exception happened, message: {ex.Message}");
+        }
+        catch (ApplicationLogicException ex)
+        {
+            Console.WriteLine($"{nameof(ApplicationLogicException)} exception happened, message: {ex.Message}");
+        }
+        catch (ConsoleAppLogicException ex)
+        {
+            Console.WriteLine($"{nameof(ConsoleAppLogicException)} exception happened, message: {ex.Message}");
+        }
         catch (Exception ex)
         {
             StaticLogger.Error("Error has been occured,{ex}", ex);
+            Console.WriteLine("Unhandled exception happened");
             throw;
         }
     }
