@@ -53,14 +53,14 @@ public class ScheduleOrdersCommandHandler : IRequestHandler<ScheduleOrdersComman
             if (originDestinationToFlightListDictionary.TryGetValue(
                     (order.OriginAirportCode, order.DestinationAirportCode), out var flightList))
             {
-                var selectedFlight = flightList.FirstOrDefault(x => x.Orders.Count < x.MaxAmountOfBoxes);
+                var selectedFlight = flightList.FirstOrDefault(x => x.Orders == null || x.Orders.Count < x.MaxAmountOfBoxes);
 
                 if (selectedFlight is null)
                 {
                     continue;
                 }
 
-                selectedFlight.Orders.Add(order);
+                selectedFlight.AddOrder(order);
             }
         }
 

@@ -4,9 +4,6 @@ namespace SpeedyAir.Domain;
 
 public class Flight
 {
-    public Flight()
-    { }
-    
     public Flight(int flightNumber, 
         string originCity, string originAirportCode, 
         string destinationCity,
@@ -45,6 +42,17 @@ public class Flight
     
     public int MaxAmountOfBoxes { get; set; }
 
-    
+    public void AddOrder(Order order)
+    {
+        if (Orders == null)
+        {
+            Orders = new List<Order>() { order };
+        }
+        else
+        {
+            Orders.Add(order);
+        }
+    }
+
     public List<Order> Orders { get; set; }
 }

@@ -21,8 +21,8 @@ public class AddOrdersCommandHandler : IRequestHandler<AddOrdersCommand, List<in
         
         var domainOrders = request.Orders.Select(requestOrder => new Domain.Order(
             requestOrder.OrderIdentificator,
-            requestOrder.OriginAirportCode,
-            requestOrder.DestinationAirportCode
+            requestOrder.DestinationAirportCode,
+            requestOrder.OriginAirportCode
         )).ToList();
 
         await _ordersRepository.AddOrders(domainOrders);
