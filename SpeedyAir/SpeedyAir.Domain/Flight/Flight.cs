@@ -4,6 +4,11 @@ namespace SpeedyAir.Domain;
 
 public class Flight
 {
+    public Flight()
+    {
+        
+    }
+    
     public Flight(int flightNumber, 
         string originCity, string originAirportCode, 
         string destinationCity,
