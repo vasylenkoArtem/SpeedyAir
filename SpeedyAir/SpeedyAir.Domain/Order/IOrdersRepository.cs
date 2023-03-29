@@ -7,4 +7,6 @@ public interface IOrdersRepository : IRepositoryBase
     Task AddOrders(List<Order> orders);
 
     Task<List<Order>> GetOrders(List<int> orderIds);
+    
+    Task<List<Order>> GetPendingOrders();
 }

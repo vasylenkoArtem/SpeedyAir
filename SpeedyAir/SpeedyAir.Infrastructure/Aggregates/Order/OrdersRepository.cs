@@ -30,4 +30,11 @@ public class OrdersRepository : RepositoryBase, IOrdersRepository
         return await _dbContext.Orders.Where(x => orderIds.Contains(x.Id))
             .ToListAsync();
     }
+
+    public async Task<List<Domain.Order>> GetPendingOrders()
+    {
+        var orders = await _dbContext.Orders.Where(x => x.FlightId == null).ToListAsync();
+
+        return orders;
+    }
 }

@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using SpeedyAir.Application.AggregateRoots.Flight.Models;
+using SpeedyAir.Application.AggregateRoots.Order.Commands;
 using SpeedyAir.Domain;
 using ApplicationException = SpeedyAir.Application.Exceptions.ApplicationException;
 
@@ -8,10 +9,16 @@ namespace SpeedyAir.Application.AggregateRoots.Flight.Commands;
 public class LoadFlightScheduleCommandHandler : IRequestHandler<LoadFlightScheduleCommand, List<FlightViewModel>>
 {
     private readonly IFlightRepository _flightRepository;
+    private readonly IOrdersRepository _ordersRepository;
+    private readonly IMediator _mediator;
 
-    public LoadFlightScheduleCommandHandler(IFlightRepository flightRepository)
+    public LoadFlightScheduleCommandHandler(IFlightRepository flightRepository,
+        IOrdersRepository ordersRepository,
+        IMediator mediator)
     {
         _flightRepository = flightRepository;
+        _ordersRepository = ordersRepository;
+        _mediator = mediator;
     }
     
     public async Task<List<FlightViewModel>> Handle(LoadFlightScheduleCommand request,
@@ -34,6 +41,11 @@ public class LoadFlightScheduleCommandHandler : IRequestHandler<LoadFlightSchedu
 
         await _flightRepository.AddFlights(domainFlights);
 
+        if (request.SchedulePendingOrders)
+        {
+            await SchedulePendingOrders();
+        }
+        
         return domainFlights.Select(domainFlight => new FlightViewModel()
         {
             DestinationAirportCode = domainFlight.DestinationAirportCode,
@@ -42,5 +54,16 @@ public class LoadFlightScheduleCommandHandler : IRequestHandler<LoadFlightSchedu
             OriginCity = domainFlight.OriginCity,
             OriginAirportCode = domainFlight.OriginAirportCode
         }).ToList();
+    }
+
+    //TODO: Move to separate service and make a background task
+    private async Task SchedulePendingOrders()
+    {
+        var pendingOrders = await _ordersRepository.GetPendingOrders();
+
+        await _mediator.Send(new ScheduleOrdersCommand()
+        {
+            OrderIds = pendingOrders.Select(x => x.Id).ToList()
+        });
     }
 }
