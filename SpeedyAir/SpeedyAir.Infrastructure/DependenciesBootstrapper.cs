@@ -10,13 +10,13 @@ namespace SpeedyAir.Infrastructure
 
     public static class DependenciesBootstrapper
     {
-        public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddSqlServerDatabase(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<SpeedyAirDbContext>(options =>
             {
 
                 options.UseSqlServer(
-                        configuration.GetConnectionString("BNineConnection"),
+                        configuration.GetConnectionString("DatabaseConnection"),
                         b => b.MigrationsAssembly(typeof(SpeedyAirDbContext).Assembly.FullName));
 
                 options.EnableDetailedErrors();

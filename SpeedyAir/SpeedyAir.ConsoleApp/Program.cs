@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using NLog;
 using SpeedyAir.Application;
 using SpeedyAir.ConsoleApp.Services;
+using SpeedyAir.Infrastructure;
 
 namespace SpeedyAir.ConsoleApp;
 
@@ -52,6 +53,7 @@ internal class Program
 
         services.AddTransient<IConfiguration>(x => configuration);
 
+        services.AddSqlServerDatabase(configuration);
         services.AddConsoleAppServices();
         services.AddApplication();
         

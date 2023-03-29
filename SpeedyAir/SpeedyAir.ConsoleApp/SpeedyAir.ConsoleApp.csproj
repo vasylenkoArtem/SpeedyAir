@@ -8,6 +8,10 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0-preview.2.23128.3">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
       <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0-preview.2.23128.3" />
       <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="8.0.0-preview.2.23128.3" />
       <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0-preview.2.23128.3" />
@@ -21,6 +25,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\SpeedyAir.Application\SpeedyAir.Application.csproj" />
+      <ProjectReference Include="..\SpeedyAir.Infrastructure\SpeedyAir.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>
