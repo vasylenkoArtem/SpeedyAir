@@ -6,7 +6,7 @@ using ApplicationException = SpeedyAir.Application.Exceptions.ApplicationExcepti
 
 namespace SpeedyAir.Application.AggregateRoots.Flight.Commands;
 
-public class LoadFlightScheduleCommandHandler : IRequestHandler<LoadFlightScheduleCommand, List<FlightViewModel>>
+public class LoadFlightScheduleCommandHandler : IRequestHandler<LoadFlightScheduleCommand, List<GetFlightViewModel>>
 {
     private readonly IFlightRepository _flightRepository;
     private readonly IOrdersRepository _ordersRepository;
@@ -21,7 +21,7 @@ public class LoadFlightScheduleCommandHandler : IRequestHandler<LoadFlightSchedu
         _mediator = mediator;
     }
     
-    public async Task<List<FlightViewModel>> Handle(LoadFlightScheduleCommand request,
+    public async Task<List<GetFlightViewModel>> Handle(LoadFlightScheduleCommand request,
         CancellationToken cancellationToken)
     {
         if (request.ScheduleDays.Count <= 0)
@@ -48,13 +48,14 @@ public class LoadFlightScheduleCommandHandler : IRequestHandler<LoadFlightSchedu
             await SchedulePendingOrders();
         }
         
-        return domainFlights.Select(domainFlight => new FlightViewModel()
+        return domainFlights.Select(domainFlight => new GetFlightViewModel()
         {
             DestinationAirportCode = domainFlight.DestinationAirportCode,
             DestinationCity = domainFlight.DestinationCity,
             FlightNumber = domainFlight.FlightNumber,
             OriginCity = domainFlight.OriginCity,
-            OriginAirportCode = domainFlight.OriginAirportCode
+            OriginAirportCode = domainFlight.OriginAirportCode,
+            DayIndex = domainFlight.DepartureDay
         }).ToList();
     }
 

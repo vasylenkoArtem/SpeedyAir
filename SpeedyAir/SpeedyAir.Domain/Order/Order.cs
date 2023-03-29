@@ -1,4 +1,6 @@
-﻿namespace SpeedyAir.Domain;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace SpeedyAir.Domain;
 
 public class Order
 {
@@ -14,6 +16,7 @@ public class Order
         DestinationAirportCode = destinationAirportCode;
     }
 
+    [Key]
     public int Id { get; set; }
 
     public string OrderIdentifier { get; set; }

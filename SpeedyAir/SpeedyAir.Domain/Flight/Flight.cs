@@ -1,4 +1,6 @@
-﻿namespace SpeedyAir.Domain;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace SpeedyAir.Domain;
 
 public class Flight
 {
@@ -24,6 +26,7 @@ public class Flight
         FlightNumber = flightNumber;
     }
     
+    [Key]
     public int Id { get; set; }
 
     public int FlightNumber { get; set; }

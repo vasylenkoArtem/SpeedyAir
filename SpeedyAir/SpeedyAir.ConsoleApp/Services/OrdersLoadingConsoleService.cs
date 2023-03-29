@@ -1,4 +1,6 @@
 ﻿using MediatR;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using SpeedyAir.Application.AggregateRoots.Order.Commands;
 using SpeedyAir.Application.AggregateRoots.Order.Models;
 
@@ -15,17 +17,39 @@ public class OrdersLoadingConsoleService : IOrdersLoadingConsoleService
 
     public async Task LoadOrders()
     {
-        //todo: replace mock with console
-        var inputOrders = new List<AddOrderViewModel>()
-        {
-            new AddOrderViewModel()
-            {
-                OrderIdentificator = "dd1",
-                DestinationAirportCode = "LHR",
-                OriginAirportCode = "FRA"
-            }
-        };
+        Console.WriteLine(
+            "Please specify path to the json file with orders: ");
 
+        var ordersJsonFilePath = Console.ReadLine();
+
+        if (string.IsNullOrWhiteSpace(ordersJsonFilePath))
+        {
+            ThrowInputValidationErrorWithAction("File path");
+        }
+
+        var inputOrders = new List<AddOrderViewModel>();
+        
+        using (StreamReader r = new StreamReader(ordersJsonFilePath))
+        {
+            string json = await r.ReadToEndAsync();
+
+            var deserializedJson = JsonConvert.DeserializeObject<JObject>(json);
+            
+            foreach (var property in deserializedJson.Properties())
+            {
+                var orderIdentificator = property.Name;
+                var destinationAirportCode = property.Value.First().Values().First().Value<string>();
+                
+                inputOrders.Add(new AddOrderViewModel()
+                {
+                    OrderIdentificator = orderIdentificator,
+                    DestinationAirportCode = destinationAirportCode,
+                    OriginAirportCode = "YUL"
+                });
+            }
+
+        }
+        
         var orderIds = await _mediator.Send(new AddOrdersCommand()
         {
             Orders = inputOrders
@@ -35,5 +59,39 @@ public class OrdersLoadingConsoleService : IOrdersLoadingConsoleService
         {
             OrderIds = orderIds
         });
+
+        foreach (var order in orderViewModels)
+        {
+            var orderIdentifierText = $"order: {order.OrderIdentifier}, ";
+
+            if (!order.FlightNumber.HasValue)
+            {
+                Console.WriteLine(orderIdentifierText + "not scheduled");
+            }
+            else
+            {
+                Console.WriteLine(orderIdentifierText +
+                                  $"flightNumber: {order.FlightNumber}, departure: {order.DepartureCity}, arrival: {order.ArrivalCity}, day: {order.DayIndex}");
+            }
+        }
+    }
+
+    private static void ThrowInputValidationErrorWithAction(string fieldName = null)
+    {
+        var fieldNameText = !string.IsNullOrEmpty(fieldName) ? $" in the {fieldName} field" : string.Empty;
+
+        Console.WriteLine($"Wrong input{fieldNameText}, Do you want to try again? (Y/N)");
+
+        var input = Console.ReadLine();
+        if (input == "Y" || input == "y")
+        {
+            //restart
+        }
+        //break;
+    }
+    
+    public class InputOrder
+    {
+        public string Destination { get; set; }
     }
 }
