@@ -14,8 +14,8 @@ internal class Program
 
     private static async Task RunTakeHomeScenario(IServiceScope serviceScope)
     {
-        var flightScheduleService = serviceScope.ServiceProvider.GetRequiredService<IFlightScheduleService>();
-        var ordersService = serviceScope.ServiceProvider.GetRequiredService<IOrdersService>();
+        var flightScheduleService = serviceScope.ServiceProvider.GetRequiredService<IFlightScheduleConsoleService>();
+        var ordersService = serviceScope.ServiceProvider.GetRequiredService<IOrdersLoadingConsoleService>();
         
         await flightScheduleService.LoadFlightSchedule();
         

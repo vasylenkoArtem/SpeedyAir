@@ -4,11 +4,11 @@ using SpeedyAir.Application.AggregateRoots.Flight.Models;
 
 namespace SpeedyAir.ConsoleApp.Services;
 
-public class FlightScheduleService : IFlightScheduleService
+public class FlightScheduleConsoleConsoleService : IFlightScheduleConsoleService
 {
     private readonly IMediator _mediator;
 
-    public FlightScheduleService(IMediator mediator)
+    public FlightScheduleConsoleConsoleService(IMediator mediator)
     {
         _mediator = mediator;
     }

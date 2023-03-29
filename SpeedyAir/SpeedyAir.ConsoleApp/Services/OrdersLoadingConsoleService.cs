@@ -4,11 +4,11 @@ using SpeedyAir.Application.AggregateRoots.Order.Models;
 
 namespace SpeedyAir.ConsoleApp.Services;
 
-public class OrdersService : IOrdersService
+public class OrdersLoadingConsoleService : IOrdersLoadingConsoleService
 {
     private readonly IMediator _mediator;
 
-    public OrdersService(IMediator mediator)
+    public OrdersLoadingConsoleService(IMediator mediator)
     {
         _mediator = mediator;
     }

@@ -1,6 +1,6 @@
 ﻿namespace SpeedyAir.ConsoleApp.Services;
 
-public interface IOrdersService
+public interface IOrdersLoadingConsoleService
 {
     Task LoadOrders();
 }
