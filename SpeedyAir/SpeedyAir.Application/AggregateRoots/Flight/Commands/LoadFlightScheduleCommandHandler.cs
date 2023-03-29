@@ -24,7 +24,7 @@ public class LoadFlightScheduleCommandHandler : IRequestHandler<LoadFlightSchedu
     public async Task<List<GetFlightViewModel>> Handle(LoadFlightScheduleCommand request,
         CancellationToken cancellationToken)
     {
-        if (request.ScheduleDays.Count <= 0)
+        if (request.ScheduleDays is null || request.ScheduleDays.Count == 0)
         {
             throw new ApplicationLogicException("Schedule is empty");
         }        
