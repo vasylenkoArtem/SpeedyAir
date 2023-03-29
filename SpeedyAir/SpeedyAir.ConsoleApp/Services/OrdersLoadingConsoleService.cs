@@ -4,6 +4,7 @@ using Newtonsoft.Json.Linq;
 using SpeedyAir.Application.AggregateRoots.Order.Commands;
 using SpeedyAir.Application.AggregateRoots.Order.Models;
 using SpeedyAir.ConsoleApp.Exceptions;
+using SpeedyAir.ConsoleApp.Services.Extensions;
 
 namespace SpeedyAir.ConsoleApp.Services;
 
@@ -25,7 +26,7 @@ public class OrdersLoadingConsoleService : IOrdersLoadingConsoleService
 
         if (string.IsNullOrWhiteSpace(ordersJsonFilePath))
         {
-            ThrowInputValidationErrorWithAction("File path");
+            ConsoleServiceExtensions.ThrowInputValidationError("File path");
         }
 
         var inputOrders = new List<AddOrderViewModel>();
@@ -84,20 +85,6 @@ public class OrdersLoadingConsoleService : IOrdersLoadingConsoleService
         }
     }
 
-    private static void ThrowInputValidationErrorWithAction(string fieldName = null)
-    {
-        var fieldNameText = !string.IsNullOrEmpty(fieldName) ? $" in the {fieldName} field" : string.Empty;
-
-        Console.WriteLine($"Wrong input{fieldNameText}, Do you want to try again? (Y/N)");
-
-        var input = Console.ReadLine();
-        if (input == "Y" || input == "y")
-        {
-            //restart
-        }
-        //break;
-    }
-    
     public class InputOrder
     {
         public string Destination { get; set; }
