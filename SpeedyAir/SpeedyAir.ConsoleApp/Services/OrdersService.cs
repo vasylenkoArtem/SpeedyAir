@@ -20,9 +20,9 @@ public class OrdersService : IOrdersService
         {
             new AddOrderViewModel()
             {
-                OrderIdentificator = "",
-                DestinationAirportCode = "",
-                OriginAirportCode = ""
+                OrderIdentificator = "dd1",
+                DestinationAirportCode = "LHR",
+                OriginAirportCode = "FRA"
             }
         };
 

@@ -7,6 +7,7 @@
         public static IServiceCollection AddConsoleAppServices(this IServiceCollection services)
         {
             services.AddTransient<IFlightScheduleService, FlightScheduleService>();
+            services.AddTransient<IOrdersService, OrdersService>();
             
             return services;
         }

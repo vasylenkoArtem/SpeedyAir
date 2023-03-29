@@ -20,8 +20,6 @@ internal class Program
         await flightScheduleService.LoadFlightSchedule();
         
         await ordersService.LoadOrders();
-        
-        //TODO: process not scheduled orders Integration Event, trigger when new flight added
     }
 
     internal static async Task Main(string[] args)

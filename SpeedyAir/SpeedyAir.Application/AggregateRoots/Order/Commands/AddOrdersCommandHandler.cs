@@ -26,6 +26,8 @@ public class AddOrdersCommandHandler : IRequestHandler<AddOrdersCommand, List<in
         )).ToList();
 
         await _ordersRepository.AddOrders(domainOrders);
+        
+        await _ordersRepository.SaveChangesAsync(cancellationToken);
 
         return domainOrders.Select(x => x.Id).ToList();
     }

@@ -31,7 +31,7 @@ public class FlightScheduleService : IFlightScheduleService
                         OriginAirportCode = "FRA",
                         DestinationCity = "London",
                         DestinationAirportCode = "LHR",
-                        FlightNumber = 112
+                        FlightNumber = 4
                     }
                 }
             }

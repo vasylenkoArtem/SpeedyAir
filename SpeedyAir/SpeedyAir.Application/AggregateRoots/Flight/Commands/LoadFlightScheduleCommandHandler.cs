@@ -40,6 +40,8 @@ public class LoadFlightScheduleCommandHandler : IRequestHandler<LoadFlightSchedu
             ))).ToList();
 
         await _flightRepository.AddFlights(domainFlights);
+        
+        await _flightRepository.SaveChangesAsync(cancellationToken);
 
         if (request.SchedulePendingOrders)
         {
@@ -56,7 +58,7 @@ public class LoadFlightScheduleCommandHandler : IRequestHandler<LoadFlightSchedu
         }).ToList();
     }
 
-    //TODO: Move to separate service and make a background task
+    //TODO: Move to separate service and make a background task, make integration event
     private async Task SchedulePendingOrders()
     {
         var pendingOrders = await _ordersRepository.GetPendingOrders();
